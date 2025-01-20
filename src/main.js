@@ -18,3 +18,28 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+
+
+
+const iframe = document.getElementById('myIframe');
+
+// Detect deviceorientation events
+window.addEventListener('deviceorientation', (event) => {
+  // Send the gyroscope data to the iframe
+  iframe.contentWindow.postMessage({
+    type: 'deviceorientation',
+    alpha: event.alpha,
+    beta: event.beta,
+    gamma: event.gamma
+  }, '*');
+});
+
+// You can also listen for devicemotion events if you want more detailed motion data
+window.addEventListener('devicemotion', (event) => {
+  iframe.contentWindow.postMessage({
+    type: 'devicemotion',
+    acceleration: event.acceleration,
+    rotationRate: event.rotationRate
+  }, '*');
+});
