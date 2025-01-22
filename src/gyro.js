@@ -1,6 +1,7 @@
 // Check if the device supports DeviceOrientationEvent
 if (window.DeviceOrientationEvent) {
   window.addEventListener("deviceorientation", function (event) {
+    alert("Headers")
     // Extracting the alpha, beta, and gamma angles from the event
     const alpha = event.alpha;  // Rotation around the z-axis
     const beta = event.beta;    // Rotation around the x-axis
