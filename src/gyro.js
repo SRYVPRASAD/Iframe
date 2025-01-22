@@ -1,12 +1,12 @@
 // Check if the device supports DeviceOrientationEvent
 if (window.DeviceOrientationEvent) {
   window.addEventListener("deviceorientation", function (event) {
-
+    console.log('DeviceOrientation event fired:', event);
+    alert('DeviceOrientation event fired:', event);
     // Extracting the alpha, beta, and gamma angles from the event
     const alpha = event.alpha;  // Rotation around the z-axis
     const beta = event.beta;    // Rotation around the x-axis
     const gamma = event.gamma;  // Rotation around the y-axis
-
     // Prepare the data object to send
     const gyroData = {
       alpha: alpha.toFixed(2),  // Round the values to two decimal places
