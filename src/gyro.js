@@ -10,9 +10,9 @@ if (window.DeviceOrientationEvent) {
 
     // Prepare the data object to send
     const gyroData = {
-      alpha: alpha.toFixed(2),
-      beta: beta.toFixed(2),
-      gamma: gamma.toFixed(2)
+      alpha: alpha?.toFixed(2),
+      beta: beta?.toFixed(2),
+      gamma: gamma?.toFixed(2)
     };
 
 
