@@ -4,9 +4,33 @@
 <head>
   <link rel="stylesheet" href="./src/styles.css" />
   <title>3D Viewer iFrame Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #gyro-data {
+      margin-top: 20px;
+      font-size: 18px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      display: inline-block;
+      width: 50%;
+    }
+  </style>
 </head>
 
 <body>
+
+  <h1>Gyroscope Data</h1>
+  <div id="gyro-data">Waiting for gyroscope data...</div>
+
+  <script src="gyro.js"></script>
+
+
+
   <!-- <div class="input-container">
     <label for="iframe-url">Enter URL:</label>
     <input type="text" id="iframe-url" placeholder="Enter URL here" />
@@ -15,64 +39,10 @@
   <!-- <div class="iframe-container">
     <iframe id="dynamic-iframe"></iframe>
   </div> -->
-  <iframe id="myIframe" src="https://3dgyroscope.netlify.app/" style="width: 100%; height: 100vh; border: none;" allow="accelerometer; gyroscope;" allowfullscreen>
-  </iframe>
-  <div class="iframe-container">
-  </div>
-
-  <script>
-    const iframe = document.getElementById("reactApp");
-
-    const handleOrientation = (event) => {
-      if (!event) return;
-
-      const gyroData = {
-        alpha: event.alpha || 0, // Z-axis rotation
-        beta: event.beta || 0,   // X-axis rotation
-        gamma: event.gamma || 0, // Y-axis rotation
-      };
-
-      // Send the data to the iframe
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage(gyroData, "*");
-      }
-    };
-
-    const initGyroscope = () => {
-      if (typeof DeviceOrientationEvent.requestPermission === "function") {
-        DeviceOrientationEvent.requestPermission()
-          .then((permissionState) => {
-            if (permissionState === "granted") {
-              window.addEventListener("deviceorientation", handleOrientation, true);
-            } else {
-              console.error("Gyroscope permission not granted.");
-            }
-          })
-          .catch(console.error);
-      } else {
-        // Add listener for non-iOS browsers
-        window.addEventListener("deviceorientation", handleOrientation, true);
-      }
-    };
-
-    // Request gyroscope permission on user interaction
-    document.addEventListener("DOMContentLoaded", () => {
-      const button = document.createElement("button");
-      button.textContent = "Enable Gyroscope";
-      button.style.padding = "10px 20px";
-      button.style.backgroundColor = "#007BFF";
-      button.style.color = "#fff";
-      button.style.border = "none";
-      button.style.borderRadius = "5px";
-      button.style.cursor = "pointer";
-      document.body.appendChild(button);
-
-      button.addEventListener("click", () => {
-        initGyroscope();
-        button.style.display = "none"; // Hide the button after enabling
-      });
-    });
-  </script>
+  <!-- <div class="iframe-container">
+    <iframe id="myIframe" src="https://3dgyroscope.netlify.app/" style="width: 100%; height: 100vh; border: none;" allow="accelerometer; gyroscope;" allowfullscreen>
+    </iframe>
+  </div> -->
 
   <!-- 
   <script>
