@@ -25,84 +25,9 @@
 <body>
 
   <h1>Gyroscope Data version </h1>
-  <div id="gyro-data">Waiting for gyroscope data...</div>
-  <script>
-
-    // Check if the device supports DeviceOrientationEvent
-    if (window.DeviceOrientationEvent) {
-      // Add the event listener for device orientation
-      window.addEventListener("deviceorientation", function (event) {
-        // Check if event data is available and contains necessary properties
-        if (event.alpha !== null && event.beta !== null && event.gamma !== null) {
-          const alpha = event.alpha;  // Rotation around the Z-axis
-          const beta = event.beta;    // Rotation around the X-axis
-          const gamma = event.gamma;  // Rotation around the Y-axis
-
-          // Display the gyroscope data in the div
-          document.getElementById("gyro-data").innerHTML = `
-            <strong>Gyroscope Data:</strong><br>
-            Alpha (Z-axis): ${alpha.toFixed(2)}°<br>
-            Beta (X-axis): ${beta.toFixed(2)}°<br>
-            Gamma (Y-axis): ${gamma.toFixed(2)}°
-          `;
-        } else {
-          // Handle missing or invalid data
-          console.log("Gyroscope data is not available.");
-        }
-      });
-    } else {
-      // Display a message if DeviceOrientationEvent is not supported
-      document.getElementById("gyro-data").innerHTML = "Gyroscope is not supported on your device.";
-    }
-
-  </script>
-
-  <!-- <h3> iframe Data </h3>
-  <iframe id="myIframe" src="https://3dgyroscope.netlify.app/" style="width: 100%; height: 100vh; border: none;" allow="accelerometer; gyroscope;" allowfullscreen>
-  </iframe> -->
-
-
-
-  <!-- <div class="input-container">
-    <label for="iframe-url">Enter URL:</label>
-    <input type="text" id="iframe-url" placeholder="Enter URL here" />
-    <button id="load-iframe">Load iFrame</button>
-  </div> -->
-  <!-- <div class="iframe-container">
-    <iframe id="dynamic-iframe"></iframe>
-  </div> -->
-  <!-- <div class="iframe-container">
-    <iframe id="myIframe" src="https://3dgyroscope.netlify.app/" style="width: 100%; height: 100vh; border: none;" allow="accelerometer; gyroscope;" allowfullscreen>
-    </iframe>
-  </div> -->
-
-  <!-- 
-  <script>
-
-    const iframe = document.getElementById('myIframe');
-
-    // Detect deviceorientation events
-    window.addEventListener('deviceorientation', (event) => {
-      // Send the gyroscope data to the iframe
-      iframe.contentWindow.postMessage({
-        type: 'deviceorientation',
-        alpha: event.alpha,
-        beta: event.beta,
-        gamma: event.gamma
-      }, '*');
-    });
-
-    // You can also listen for devicemotion events if you want more detailed motion data
-    window.addEventListener('devicemotion', (event) => {
-      iframe.contentWindow.postMessage({
-        type: 'devicemotion',
-        acceleration: event.acceleration,
-        rotationRate: event.rotationRate
-      }, '*');
-    });
-  </script> -->
-
-  <!-- <script src="./src/main.js"></script> -->
+  <button id="request-access">Request Gyroscope Access</button>
+  <div id="gyro-data">Waiting for permission...</div>
+  <script src="./src/gyro.js"></script>
 </body>
 
 </html>

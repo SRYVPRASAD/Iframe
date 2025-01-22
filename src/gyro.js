@@ -1,20 +1,55 @@
-// Check if the device supports DeviceOrientationEvent
-if (window.DeviceOrientationEvent) {
-  window.addEventListener("deviceorientation", function (event) {
-    alert("Headers")
-    // Extracting the alpha, beta, and gamma angles from the event
-    const alpha = event.alpha;  // Rotation around the z-axis
-    const beta = event.beta;    // Rotation around the x-axis
-    const gamma = event.gamma;  // Rotation around the y-axis
+const gyroDataDiv = document.getElementById('gyro-data');
+const requestButton = document.getElementById('request-access');
 
-    // Display the gyroscope data in the div
-    document.getElementById("gyro-data").innerHTML = `
-          <strong>Gyroscope Data:</strong><br>
-          Alpha (Z-axis): ${alpha.toFixed(2)}°<br>
-          Beta (X-axis): ${beta.toFixed(2)}°<br>
-          Gamma (Y-axis): ${gamma.toFixed(2)}°
-        `;
+// Check if the device supports DeviceOrientationEvent
+if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
+  // Show the request access button
+  requestButton.style.display = 'block';
+
+  // Add click event listener to request permission
+  requestButton.addEventListener('click', async () => {
+    try {
+      const permission = await DeviceOrientationEvent.requestPermission();
+      if (permission === 'granted') {
+        // Permission granted, start listening for gyroscope data
+        gyroDataDiv.textContent = 'Access granted. Waiting for gyroscope data...';
+        window.addEventListener('deviceorientation', (event) => {
+          if (event.alpha !== null && event.beta !== null && event.gamma !== null) {
+            gyroDataDiv.innerHTML = `
+                  <strong>Gyroscope Data:</strong><br>
+                  Alpha (Z-axis): ${event.alpha.toFixed(2)}°<br>
+                  Beta (X-axis): ${event.beta.toFixed(2)}°<br>
+                  Gamma (Y-axis): ${event.gamma.toFixed(2)}°
+                `;
+          } else {
+            gyroDataDiv.textContent = 'Gyroscope data is unavailable.';
+          }
+        });
+      } else {
+        gyroDataDiv.textContent = 'Permission denied for gyroscope access.';
+      }
+    } catch (error) {
+      gyroDataDiv.textContent = 'Error requesting gyroscope access.';
+      console.error('Permission request failed:', error);
+    }
+  });
+} else if (window.DeviceOrientationEvent) {
+  // For non-iOS devices or older iOS versions
+  gyroDataDiv.textContent = 'Gyroscope access is supported without permission.';
+  window.addEventListener('deviceorientation', (event) => {
+    if (event.alpha !== null && event.beta !== null && event.gamma !== null) {
+      gyroDataDiv.innerHTML = `
+            <strong>Gyroscope Data:</strong><br>
+            Alpha (Z-axis): ${event.alpha.toFixed(2)}°<br>
+            Beta (X-axis): ${event.beta.toFixed(2)}°<br>
+            Gamma (Y-axis): ${event.gamma.toFixed(2)}°
+          `;
+    } else {
+      gyroDataDiv.textContent = 'Gyroscope data is unavailable.';
+    }
   });
 } else {
-  document.getElementById("gyro-data").innerHTML = "Gyroscope is not supported on your device.";
+  // DeviceOrientationEvent not supported
+  gyroDataDiv.textContent = 'Gyroscope is not supported on this device.';
+  requestButton.style.display = 'none';
 }
