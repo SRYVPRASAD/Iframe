@@ -18,7 +18,7 @@ if (window.DeviceOrientationEvent) {
 
     // Send the data to the iframe (make sure to check the iframe element)
     const iframe = document.getElementById('react-iframe');
-    iframe.contentWindow.postMessage(gyroData, '*'); // '*' is the target origin (can be replaced with the actual origin for better security)
+    // iframe.contentWindow.postMessage(gyroData, '*'); // '*' is the target origin (can be replaced with the actual origin for better security)
 
     // Optionally, display the data in the parent window
     document.getElementById("gyro-data").innerHTML = `
