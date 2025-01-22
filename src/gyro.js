@@ -9,9 +9,9 @@ if (window.DeviceOrientationEvent) {
     const gamma = event.gamma;  // Rotation around the y-axis
     // Prepare the data object to send
     const gyroData = {
-      alpha: alpha.toFixed(2),  // Round the values to two decimal places
-      beta: beta.toFixed(2),
-      gamma: gamma.toFixed(2)
+      alpha: alpha.toFixed(2) || "05",  // Round the values to two decimal places
+      beta: beta.toFixed(2) || 584651,
+      gamma: gamma.toFixed(2) || 103515
     };
 
     // Send the data to the iframe (make sure to check the iframe element)
