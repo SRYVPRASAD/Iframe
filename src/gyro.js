@@ -1,6 +1,8 @@
 const gyroDataDiv = document.getElementById('gyro-data');
 const requestButton = document.getElementById('request-access');
 
+const iframe = document.getElementById('myIframe');
+const domainURL = "https://3dgyroscope.netlify.app"
 
 // Check if the device supports DeviceOrientationEvent
 if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -30,7 +32,7 @@ if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermis
             };
 
             // Send the data to the iframe
-            iframe.contentWindow.postMessage(gyroData, '*');
+            iframe.contentWindow.postMessage(gyroData, domainURL);
           } else {
             gyroDataDiv.textContent = 'Gyroscope data is unavailable.';
           }
@@ -59,9 +61,9 @@ if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermis
         beta: event.beta?.toFixed(2),
         gamma: event.gamma?.toFixed(2),
       };
-      iframe.contentWindow.postMessage(gyroData, '*');
-
-
+      // domain url became we are use different domains.
+      // | Target Origin: Always specify the target origin in the postMessage method. This prevents potential security risks.
+      iframe.contentWindow.postMessage(gyroData, domainURL);
     } else {
       gyroDataDiv.textContent = 'Gyroscope data is unavailable.';
     }

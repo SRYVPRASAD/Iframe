@@ -19,9 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-
-
-
 const iframe = document.getElementById('myIframe');
 
 // Detect deviceorientation events
