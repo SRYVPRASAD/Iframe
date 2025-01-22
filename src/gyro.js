@@ -1,6 +1,7 @@
 const gyroDataDiv = document.getElementById('gyro-data');
 const requestButton = document.getElementById('request-access');
 
+
 // Check if the device supports DeviceOrientationEvent
 if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
   // Show the request access button
@@ -21,6 +22,15 @@ if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermis
                   Beta (X-axis): ${event.beta.toFixed(2)}°<br>
                   Gamma (Y-axis): ${event.gamma.toFixed(2)}°
                 `;
+            document.getElementById('gyro-data').innerHTML = `
+              <strong>Gyroscope Data:</strong><br>
+              Alpha (Z-axis): ${gyroData.alpha}°<br>
+              Beta (X-axis): ${gyroData.beta}°<br>
+              Gamma (Y-axis): ${gyroData.gamma}°
+            `;
+
+            // Send the data to the iframe
+            iframe.contentWindow.postMessage(gyroData, '*');
           } else {
             gyroDataDiv.textContent = 'Gyroscope data is unavailable.';
           }
