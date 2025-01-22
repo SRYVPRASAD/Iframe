@@ -16,12 +16,91 @@
     <iframe id="dynamic-iframe"></iframe>
   </div> -->
   <div class="iframe-container">
-    <iframe id="myIframe" src="https://dev.vizylab.app/aushfg/Inpatient%20Unit/Ex5KZF9iyBksTiUqB1uD/903f5414-2e97-4380-9285-d6650629a150/0" width="100%" height="500px" allow="accelerometer; gyroscope;" allowfullscreen>
+    <iframe id="myIframe" src="https://3dgyroscope.netlify.app/" style="width: 100%; height: 100vh; border: none;" allow="accelerometer; gyroscope;" allowfullscreen>
     </iframe>
+
   </div>
+  <script>
+    const iframe = document.getElementById("reactApp");
 
+    const handleOrientation = (event) => {
+      if (!event) return;
 
-  <script src="./src/main.js"></script>
+      const gyroData = {
+        alpha: event.alpha || 0, // Z-axis rotation
+        beta: event.beta || 0,   // X-axis rotation
+        gamma: event.gamma || 0, // Y-axis rotation
+      };
+
+      // Send the data to the iframe
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage(gyroData, "*");
+      }
+    };
+
+    const initGyroscope = () => {
+      if (typeof DeviceOrientationEvent.requestPermission === "function") {
+        DeviceOrientationEvent.requestPermission()
+          .then((permissionState) => {
+            if (permissionState === "granted") {
+              window.addEventListener("deviceorientation", handleOrientation, true);
+            } else {
+              console.error("Gyroscope permission not granted.");
+            }
+          })
+          .catch(console.error);
+      } else {
+        // Add listener for non-iOS browsers
+        window.addEventListener("deviceorientation", handleOrientation, true);
+      }
+    };
+
+    // Request gyroscope permission on user interaction
+    document.addEventListener("DOMContentLoaded", () => {
+      const button = document.createElement("button");
+      button.textContent = "Enable Gyroscope";
+      button.style.padding = "10px 20px";
+      button.style.backgroundColor = "#007BFF";
+      button.style.color = "#fff";
+      button.style.border = "none";
+      button.style.borderRadius = "5px";
+      button.style.cursor = "pointer";
+      document.body.appendChild(button);
+
+      button.addEventListener("click", () => {
+        initGyroscope();
+        button.style.display = "none"; // Hide the button after enabling
+      });
+    });
+  </script>
+
+  <!-- 
+  <script>
+
+    const iframe = document.getElementById('myIframe');
+
+    // Detect deviceorientation events
+    window.addEventListener('deviceorientation', (event) => {
+      // Send the gyroscope data to the iframe
+      iframe.contentWindow.postMessage({
+        type: 'deviceorientation',
+        alpha: event.alpha,
+        beta: event.beta,
+        gamma: event.gamma
+      }, '*');
+    });
+
+    // You can also listen for devicemotion events if you want more detailed motion data
+    window.addEventListener('devicemotion', (event) => {
+      iframe.contentWindow.postMessage({
+        type: 'devicemotion',
+        acceleration: event.acceleration,
+        rotationRate: event.rotationRate
+      }, '*');
+    });
+  </script> -->
+
+  <!-- <script src="./src/main.js"></script> -->
 </body>
 
 </html>
