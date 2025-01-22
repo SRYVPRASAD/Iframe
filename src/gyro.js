@@ -22,12 +22,12 @@ if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermis
                   Beta (X-axis): ${event.beta.toFixed(2)}°<br>
                   Gamma (Y-axis): ${event.gamma.toFixed(2)}°
                 `;
-            document.getElementById('gyro-data').innerHTML = `
-              <strong>Gyroscope Data:</strong><br>
-              Alpha (Z-axis): ${gyroData.alpha}°<br>
-              Beta (X-axis): ${gyroData.beta}°<br>
-              Gamma (Y-axis): ${gyroData.gamma}°
-            `;
+
+            const gyroData = {
+              alpha: event.alpha?.toFixed(2),
+              beta: event.beta?.toFixed(2),
+              gamma: event.gamma?.toFixed(2),
+            };
 
             // Send the data to the iframe
             iframe.contentWindow.postMessage(gyroData, '*');
@@ -54,6 +54,14 @@ if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermis
             Beta (X-axis): ${event.beta.toFixed(2)}°<br>
             Gamma (Y-axis): ${event.gamma.toFixed(2)}°
           `;
+      const gyroData = {
+        alpha: event.alpha?.toFixed(2),
+        beta: event.beta?.toFixed(2),
+        gamma: event.gamma?.toFixed(2),
+      };
+      iframe.contentWindow.postMessage(gyroData, '*');
+
+
     } else {
       gyroDataDiv.textContent = 'Gyroscope data is unavailable.';
     }
