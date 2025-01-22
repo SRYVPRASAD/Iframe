@@ -22,7 +22,7 @@ if (window.DeviceOrientationEvent) {
 
     // Optionally, display the data in the parent window
     document.getElementById("gyro-data").innerHTML = `
-      <strong>Gyroscope Data:</strong><br>
+         <strong>Gyroscope Data:</strong><br>
       Alpha (Z-axis): ${gyroData.alpha}°<br>
       Beta (X-axis): ${gyroData.beta}°<br>
       Gamma (Y-axis): ${gyroData.gamma}°
