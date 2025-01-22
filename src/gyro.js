@@ -50,7 +50,7 @@ if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermis
             };
 
             // Send the data to the iframe
-            iframe.contentWindow.postMessage(gyroData, domainURL);
+            iframe.contentWindow.postMessage(gyroData, '*');
           } else {
             gyroDataDiv.textContent = 'Gyroscope data is unavailable.';
           }
@@ -81,7 +81,7 @@ if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermis
       };
       // domain url became we are use different domains.
       // | Target Origin: Always specify the target origin in the postMessage method. This prevents potential security risks.
-      iframe.contentWindow.postMessage(gyroData, domainURL);
+      iframe.contentWindow.postMessage(gyroData, '*');
     } else {
       gyroDataDiv.textContent = 'Gyroscope data is unavailable.';
     }
