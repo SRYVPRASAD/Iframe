@@ -1,8 +1,26 @@
+const iframe = document.getElementById('myIframe');
+const sendDataButton = document.getElementById('send-data');
+const connectionStatus = document.getElementById('connection-status');
+
 const gyroDataDiv = document.getElementById('gyro-data');
 const requestButton = document.getElementById('request-access');
 
-const iframe = document.getElementById('myIframe');
 const domainURL = "https://3dgyroscope.netlify.app"
+
+// Function to send data to the iframe
+sendDataButton.addEventListener('click', () => {
+  const message = { type: 'data', content: 'Hello from parent!' };
+  iframe.contentWindow.postMessage(message, '*'); // Send data to iframe
+});
+
+// Listen for messages from the iframe
+window.addEventListener('message', (event) => {
+  // Ensure the message is from a trusted origin if needed (e.g., event.origin === 'https://trusted-domain.com')
+  if (event.data && event.data.type === 'ack') {
+    connectionStatus.textContent = 'Connection is healthy!';
+    connectionStatus.style.color = 'green';
+  }
+});
 
 // Check if the device supports DeviceOrientationEvent
 if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
