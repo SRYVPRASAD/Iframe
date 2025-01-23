@@ -5,7 +5,7 @@ const connectionStatus = document.getElementById('connection-status');
 const gyroDataDiv = document.getElementById('gyro-data');
 const requestButton = document.getElementById('request-access');
 
-const domainURL = "https://3dgyroscope.netlify.app";
+const domainURL = "https://dev.vizylab.app/";
 
 let lastGyroData = { alpha: null, beta: null, gamma: null }; // Track last gyroscope data to avoid redundant sends
 
