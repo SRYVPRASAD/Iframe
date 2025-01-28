@@ -2,6 +2,8 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.m
 import { DeviceOrientationControls } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/DeviceOrientationControls.js";
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js";
 
+const requestAccessButton = document.getElementById("request-access");
+const gyroDataDiv = document.getElementById("gyro-data");
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
@@ -17,6 +19,26 @@ camera.position.z = 5;
 
 const orbitControls = new OrbitControls(camera, renderer.domElement);
 let deviceOrientationControls = null;
+
+requestAccessButton.addEventListener("click", async () => {
+  if (typeof DeviceOrientationEvent.requestPermission === "function") {
+    try {
+      const permission = await DeviceOrientationEvent.requestPermission();
+      if (permission === "granted") {
+        deviceOrientationControls = new DeviceOrientationControls(camera);
+        gyroDataDiv.textContent = "Gyroscope access granted!";
+      } else {
+        gyroDataDiv.textContent = "Permission denied for gyroscope access.";
+      }
+    } catch (error) {
+      gyroDataDiv.textContent = "Error requesting gyroscope access.";
+      console.error(error);
+    }
+  } else {
+    gyroDataDiv.textContent = "Gyroscope access does not require a prompt on this device.";
+    deviceOrientationControls = new DeviceOrientationControls(camera);
+  }
+});
 
 if ("DeviceOrientationEvent" in window) {
   const enableDeviceOrientationControls = async () => {
@@ -44,7 +66,7 @@ if ("DeviceOrientationEvent" in window) {
 }
 
 function sendDataToIframe() {
-  const iframe = document.getElementById("childIframe"); // Ensure the iframe has an ID
+  const iframe = document.getElementById("childIframe");
   if (iframe && iframe.contentWindow) {
     const data = {
       rotation: {
