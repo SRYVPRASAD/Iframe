@@ -4,73 +4,15 @@
 <head>
   <link rel="stylesheet" href="./src/styles.css" />
   <title>Iframe tester</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three/examples/jsm/",
+     "three/deviceAddons/":"https://unpkg.com/browse/three@0.97.0/examples/js/controls/"
     }
-
-    .div1 {
-      background-color: #f9f9f9;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border-bottom: 2px solid #ddd;
-      text-align: center;
-    }
-
-    .div1 h1 {
-      font-size: 1.8rem;
-      color: #333;
-      margin-bottom: 10px;
-    }
-
-    .div1 #request-access {
-      background-color: #4caf50;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      font-size: 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .div1 #request-access:hover {
-      background-color: #45a049;
-    }
-
-    .div1 #gyro-data {
-      margin-top: 10px;
-      font-size: 1rem;
-      color: #555;
-    }
-
-    .div2 {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      background-color: #f0f0f0;
-    }
-
-    .div2 h3 {
-      font-size: 1.2rem;
-      color: #444;
-      text-align: center;
-      margin: 10px 0;
-      background-color: #fff;
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .div2 iframe {
-      flex-grow: 1;
-      border: none;
-    }
-  </style>
+  }
+</script>
 </head>
 
 <body>
@@ -96,7 +38,8 @@
     </iframe> -->
 
   </div>
-  <script src="./src/cameraData.js" type="module"></script>
+  <script type="module" src="./src/cameraData.js"></script>
+  <script type="module" src="./src/three.js"></script>
   <!-- <script src="./src/gyro.js"></script> -->
 </body>
 

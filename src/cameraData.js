@@ -1,6 +1,9 @@
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
-import { DeviceOrientationControls } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/DeviceOrientationControls.js";
-import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js";
+import * as THREE from "three";
+
+import { DeviceOrientationControls } from "three/deviceAddons/DeviceOrientationControls.js";
+
+
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const requestAccessButton = document.getElementById("request-access");
 const gyroDataDiv = document.getElementById("gyro-data");
