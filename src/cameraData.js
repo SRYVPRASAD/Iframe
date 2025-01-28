@@ -25,11 +25,13 @@ if ("DeviceOrientationEvent" in window) {
         const permission = await DeviceOrientationEvent.requestPermission();
         if (permission === "granted") {
           deviceOrientationControls = new DeviceOrientationControls(camera);
+          console.log("DeviceOrientationControls enabled");
         } else {
           console.warn("Permission denied for DeviceOrientationEvent.");
         }
       } else {
         deviceOrientationControls = new DeviceOrientationControls(camera);
+        console.log("DeviceOrientationControls enabled (no permission request needed)");
       }
     } catch (error) {
       console.error("Error enabling device orientation controls:", error);
@@ -41,10 +43,9 @@ if ("DeviceOrientationEvent" in window) {
   console.warn("DeviceOrientationEvent is not supported on this device.");
 }
 
-const iframe = document.getElementById("dataFrame");
 function sendDataToIframe() {
   const iframe = document.getElementById("childIframe"); // Ensure the iframe has an ID
-  if (iframe) {
+  if (iframe && iframe.contentWindow) {
     const data = {
       rotation: {
         x: cube.rotation.x,
@@ -72,15 +73,6 @@ function animate() {
   }
 
   // Send camera position and rotation to the iframe
-  iframe.contentWindow.postMessage(
-    {
-      cameraPosition: camera.position,
-      cameraRotation: camera.rotation,
-    },
-    "*"
-  );
-
-  // Send data to the iframe
   sendDataToIframe();
   renderer.render(scene, camera);
 }
