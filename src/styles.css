@@ -1,6 +1,74 @@
-/* body {
-  background-color: #f0f0f0;
-  font-family: Arial, sans-serif;
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Container for Gyroscope Data */
+.gyroscope-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  margin: 2rem auto;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+p {
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+/* Button Styles */
+.gyro-button {
+  background-color: #3498db;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.gyro-button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.gyro-button:active {
+  background-color: #1c5980;
+  transform: translateY(0);
+}
+
+/* Gyroscope Data Display */
+.gyro-data-display {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #ecf0f1;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.gyro-data-display p {
+  margin: 0;
+  color: #2c3e50;
 }
 
 .input-container {
@@ -107,126 +175,4 @@ body {
 .div2 iframe {
   flex-grow: 1;
   border: none;
-} */
-/* General Styles */
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-}
-
-/* Container for Gyroscope Data */
-.gyroscope-container {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  max-width: 600px;
-  width: 90%;
-  text-align: center;
-  margin: 2rem auto;
-}
-
-h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #2c3e50;
-}
-
-p {
-  font-size: 1rem;
-  color: #7f8c8d;
-  margin-bottom: 1.5rem;
-}
-
-/* Button Styles */
-.gyro-button {
-  background-color: #3498db;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.gyro-button:hover {
-  background-color: #2980b9;
-  transform: translateY(-2px);
-}
-
-.gyro-button:active {
-  background-color: #1c5980;
-  transform: translateY(0);
-}
-
-/* Gyroscope Data Display */
-.gyro-data-display {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background-color: #ecf0f1;
-  border-radius: 8px;
-  font-size: 1rem;
-  color: #333;
-}
-
-.gyro-data-display p {
-  margin: 0;
-  color: #2c3e50;
-}
-
-/* Iframe Container */
-.div2 {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  max-width: 800px;
-  width: 90%;
-  text-align: center;
-  margin: 2rem auto;
-}
-
-.div2 h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #2c3e50;
-}
-
-/* Iframe Styling */
-iframe {
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 1rem;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .gyroscope-container,
-  .div2 {
-    width: 95%;
-    padding: 1rem;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  .gyro-button {
-    width: 100%;
-    padding: 1rem;
-  }
-
-  iframe {
-    width: 100%;
-    height: 300px;
-  }
 }
