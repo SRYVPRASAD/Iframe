@@ -1,6 +1,74 @@
+/* General Styles */
 body {
-  background-color: #f0f0f0;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Container for Gyroscope Data */
+.gyroscope-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  margin: 2rem auto;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+p {
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+/* Button Styles */
+.gyro-button {
+  background-color: #3498db;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.gyro-button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.gyro-button:active {
+  background-color: #1c5980;
+  transform: translateY(0);
+}
+
+/* Gyroscope Data Display */
+.gyro-data-display {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #ecf0f1;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.gyro-data-display p {
+  margin: 0;
+  color: #2c3e50;
 }
 
 .input-container {

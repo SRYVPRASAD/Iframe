@@ -14,15 +14,14 @@
 </head>
 
 <body>
-  <div class="div1">
-    <h1>Gyroscope Data version </h1>
-    <button id="send-data">Send Data to Iframe</button>
-    <div id="connection-status">Waiting for connection...</div>
-    <br />
-    <button id="request-access">Request Gyroscope Access</button>
-    <div id="gyro-data">Waiting for permission...</div>
-
+  <!-- Gyroscope Data Section -->
+  <div class="gyroscope-container">
+    <h1>Gyroscope Data Viewer</h1>
+    <p>Open this page on your mobile device to experience the gyroscope in action.</p>
+    <button id="request-access" class="gyro-button">Enable Gyroscope Access</button>
+    <div id="gyro-data" class="gyro-data-display">Waiting for permission...</div>
   </div>
+
   <div class="div2">
     <h3> iframe Data </h3>
     <iframe id="childIframe" src="https://3dgyroscope.netlify.app/cameraData" style="width: 100%; height: 100%; border: none;" allow="accelerometer; gyroscope;" allowfullscreen></iframe>
