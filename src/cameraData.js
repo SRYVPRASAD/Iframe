@@ -23,6 +23,7 @@ const domainURL = "https://3dgyroscope.netlify.app/";
 camera.position.z = 5;
 
 const orbitControls = new OrbitControls(camera, renderer.domElement);
+orbitControls.enabled = false;
 let deviceOrientationControls = null;
 
 requestAccessButton.addEventListener("click", async () => {
@@ -98,6 +99,8 @@ function animate() {
   orbitControls.update();
   if (deviceOrientationControls) {
     deviceOrientationControls.update();
+  } else {
+    orbitControls.update();
   }
 
   // Send camera position and rotation to the iframe
