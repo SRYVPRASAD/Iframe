@@ -156,7 +156,8 @@ body {
 }
 
 .div2 {
-  flex-grow: 1;
+  width: 90vw;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   background-color: #f0f0f0;
