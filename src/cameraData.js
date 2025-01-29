@@ -82,7 +82,6 @@ function sendDataToIframe() {
         z: camera.position.z,
       },
     };
-    console.log('Sending data to iframe:', data);
     iframe.contentWindow.postMessage({ type: 'data', ...data }, "*");
   }
 }
