@@ -19,6 +19,7 @@ const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
+const domainURL = "https://3dgyroscope.netlify.app/";
 camera.position.z = 5;
 
 const orbitControls = new OrbitControls(camera, renderer.domElement);
@@ -84,9 +85,10 @@ function sendDataToIframe() {
         z: camera.position.z,
       },
     };
-
+    console.log('data', data)
+    iframe.contentWindow.postMessage({ type: 'data', ...data }, "*");
     // Send data to the iframe
-    iframe.contentWindow.postMessage(data, "*");
+    // iframe.contentWindow.postMessage(data, "*");
   }
 }
 
