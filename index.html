@@ -1,48 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <link rel="stylesheet" href="./src/styles.css" />
-  <title>Iframe tester</title>
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three/examples/jsm/"    }
-  }
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parent</title>
 </head>
 
 <body>
+  <h1>Device Orientation Demo</h1>
 
-  <!-- Gyroscope Data Section -->
-  <div class="gyroscope-container">
-    <h1>Gyroscope Data Viewer</h1>
-    <p>Open this page on your mobile device to experience the gyroscope in action.</p>
-    <button id="request-access" class="gyro-button">Enable Gyroscope Access</button>
-    <div id="gyro-data" class="gyro-data-display">Waiting for permission...</div>
+  <iframe id="iframe" src="https://dev.vizylab.app/aushfg/Inpatient%20Unit/Ex5KZF9iyBksTiUqB1uD/903f5414-2e97-4380-9285-d6650629a150/0" width="100%" height="500px" style="border: none;"></iframe>
 
-  </div>
+  <script>
+    const iframe = document.getElementById('iframe');
 
-  <div class="div2">
-    <h3> iframe Data </h3>
-    <!-- <iframe id="childIframe" src="https://3dgyroscope.netlify.app/cameraData" style="width: 100%; height: 100%; border: none;" allow="accelerometer; gyroscope;" allowfullscreen></iframe> -->
-    <!-- <iframe id="myIframe" src="http://localhost:5173/aushfg/Inpatient%20Unit/Ex5KZF9iyBksTiUqB1uD/903f5414-2e97-4380-9285-d6650629a150/0" style="width: 100%; height: 100vh; border: none;" allow="accelerometer; gyroscope;" allowfullscreen>
-    </iframe> -->
-    <!-- <iframe id="childIframe" src="http://localhost:5173/aushfg/Inpatient%20Unit/Ex5KZF9iyBksTiUqB1uD/903f5414-2e97-4380-9285-d6650629a150/0" style="width: 100%; height: 100vh; border: none;" allow="accelerometer; gyroscope;" -->
-    <!-- allow="xr-spatial-tracking" allowfullscreen> -->
-    <!-- </iframe> -->
-    <iframe id="childIframe" src="https://dev.vizylab.app/aushfg/Inpatient%20Unit/Ex5KZF9iyBksTiUqB1uD/903f5414-2e97-4380-9285-d6650629a150/0" style="width: 100%; height: 100vh; border: none;" allow="accelerometer; gyroscope;"
-      allow="xr-spatial-tracking" allowfullscreen>
-    </iframe>
+    // Handle device orientation
+    const handleOrientation = (event) => {
+      if (iframe) {
+        // Send orientation data to iframe
+        iframe.contentWindow.postMessage({
+          type: 'deviceOrientation',
+          data: {
+            alpha: event.alpha,
+            beta: event.beta,
+            gamma: event.gamma
+          }
+        }, '*'); // Replace with the iframe's actual domain
+      }
+    };
 
-    <!-- <iframe id="myIframe" src="https://3dgyroscope.netlify.app/" style="width: 100%; height: 100vh; border: none;" allow="accelerometer; gyroscope;" allowfullscreen>
-    </iframe> -->
-  </div>
+    // Listen for device orientation changes
+    window.addEventListener('deviceorientation', handleOrientation, false);
 
-  <script type="module" src="./src/cameraData.js"></script>
-  <!-- <script type="module" src="./src/three.js"></script> -->
-  <!-- <script src="./src/gyro.js"></script> -->
+    // Cleanup listener when window is closed
+    window.addEventListener('unload', () => {
+      window.removeEventListener('deviceorientation', handleOrientation);
+    });
+  </script>
 </body>
 
 </html>
