@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -27,6 +27,52 @@
             gamma: event.gamma
           }
         }, '*'); // Replace with the iframe's actual domain
+      }
+    };
+
+    // Listen for device orientation changes
+    window.addEventListener('deviceorientation', handleOrientation, false);
+
+    // Cleanup listener when window is closed
+    window.addEventListener('unload', () => {
+      window.removeEventListener('deviceorientation', handleOrientation);
+    });
+  </script>
+</body>
+
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Device Orientation Demo</title>
+</head>
+
+<body>
+  <h1>Device Orientation Demo</h1>
+
+  <iframe id="iframe" src="http://localhost:5173/aushfg/Inpatient%20Unit/Ex5KZF9iyBksTiUqB1uD/903f5414-2e97-4380-9285-d6650629a150/0" width="100%" height="500px" style="border: none;"></iframe>
+
+  <script>
+    const iframe = document.getElementById('iframe');
+
+    // Handle device orientation
+    const handleOrientation = (event) => {
+      if (iframe) {
+        const data = {
+          type: 'deviceOrientation',
+          data: {
+            alpha: event.alpha,   // rotation around z-axis
+            beta: event.beta,     // rotation around x-axis
+            gamma: event.gamma    // rotation around y-axis
+          }
+        };
+        console.log('Sending orientation data:', data);
+        iframe.contentWindow.postMessage(data, '*'); // Use specific domain instead of '*' for production
       }
     };
 
