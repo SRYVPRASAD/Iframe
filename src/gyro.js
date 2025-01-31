@@ -3,8 +3,9 @@ const sendDataButton = document.getElementById('send-data');
 const connectionStatus = document.getElementById('connection-status');
 const gyroDataDiv = document.getElementById('gyro-data');
 const requestButton = document.getElementById('request-access');
-// Throttle gyroscope data handling to 100ms
-const throttledHandleGyroData = throttle(handleGyroData, 100);
+
+let lastGyroData = { alpha: null, beta: null, gamma: null }; // Track last gyroscope data to avoid redundant sends
+let gyroDisplayUpdateTimer = null; // Timer for display throttling
 
 // Function to send data to the iframe
 sendDataButton.addEventListener('click', () => {
@@ -25,7 +26,7 @@ const updateGyroDisplay = (gyroData) => {
     <strong>Gyroscope Data:</strong><br>
     Alpha (Z-axis): ${gyroData.alpha}°<br>
     Beta (X-axis): ${gyroData.beta}°<br>
-    Gamma (Y-axis): ${gyroData.gamma}° 
+    Gamma (Y-axis): ${gyroData.gamma}°
   `;
 };
 
@@ -44,11 +45,32 @@ const handleGyroData = (event) => {
         updateGyroDisplay(gyroData);
         gyroDisplayUpdateTimer = null;
       }, 200);
-    }     // Send the data regardless of whether it has changed
-    sendGyroData(gyroData); // Send the data continuously
+    }
+    sendGyroData(gyroData);
+    // Send the data only if it has changed
+    if (
+      lastGyroData.alpha !== gyroData.alpha ||
+      lastGyroData.beta !== gyroData.beta ||
+      lastGyroData.gamma !== gyroData.gamma
+    ) {
+      sendGyroData(gyroData);
+      lastGyroData = gyroData; // Update the last sent data
+    }
   } else {
     gyroDataDiv.textContent = 'Gyroscope data is unavailable.';
   }
+};
+
+// Utility to throttle events
+const throttle = (func, limit) => {
+  let inThrottle;
+  return function () {
+    if (!inThrottle) {
+      func.apply(this, arguments);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
 };
 
 // Check gyroscope support and request permissions if needed
@@ -82,7 +104,5 @@ if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermis
   requestButton.style.display = 'none';
 }
 
-// Check iframe load and readiness
-iframe.onload = () => {
-  console.log('Iframe loaded and ready to receive messages.');
-};
+// Throttle gyroscope data handling to 100ms
+const throttledHandleGyroData = throttle(handleGyroData, 100);
