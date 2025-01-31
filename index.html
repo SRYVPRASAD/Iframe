@@ -1,48 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Parent</title>
-</head>
-
-<body>
-  <h1>Device Orientation Demo</h1>
-
-  <iframe id="iframe" src="https://dev.vizylab.app/aushfg/Inpatient%20Unit/Ex5KZF9iyBksTiUqB1uD/903f5414-2e97-4380-9285-d6650629a150/0" width="100%" height="500px" style="border: none;"></iframe>
-
-  <script>
-    const iframe = document.getElementById('iframe');
-
-    // Handle device orientation
-    const handleOrientation = (event) => {
-      if (iframe) {
-        // Send orientation data to iframe
-        iframe.contentWindow.postMessage({
-          type: 'deviceOrientation',
-          data: {
-            alpha: event.alpha,
-            beta: event.beta,
-            gamma: event.gamma
-          }
-        }, '*'); // Replace with the iframe's actual domain
-      }
-    };
-
-    // Listen for device orientation changes
-    window.addEventListener('deviceorientation', handleOrientation, false);
-
-    // Cleanup listener when window is closed
-    window.addEventListener('unload', () => {
-      window.removeEventListener('deviceorientation', handleOrientation);
-    });
-  </script>
-</body>
-
-</html> -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,6 +15,11 @@
   <script>
     const iframe = document.getElementById('iframe');
 
+    // Enable orientation event listener on click
+    document.body.addEventListener('click', function () {
+      window.addEventListener('deviceorientation', handleOrientation, false);
+    });
+
     // Handle device orientation
     const handleOrientation = (event) => {
       if (iframe) {
@@ -72,14 +32,11 @@
           }
         };
         console.log('Sending orientation data:', data);
-        iframe.contentWindow.postMessage(data, '*'); // Use specific domain instead of '*' for production
+        iframe.contentWindow.postMessage(data, 'https://dev.vizylab.app'); // Specify the iframe's domain for security
       }
     };
 
-    // Listen for device orientation changes
-    window.addEventListener('deviceorientation', handleOrientation, false);
-
-    // Cleanup listener when window is closed
+    // Cleanup listener when window is closed or unloaded
     window.addEventListener('unload', () => {
       window.removeEventListener('deviceorientation', handleOrientation);
     });
