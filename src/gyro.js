@@ -1,12 +1,8 @@
 const iframe = document.getElementById('myIframe');
 const sendDataButton = document.getElementById('send-data');
 const connectionStatus = document.getElementById('connection-status');
-
 const gyroDataDiv = document.getElementById('gyro-data');
 const requestButton = document.getElementById('request-access');
-
-// const domainURL = "https://dev.vizylab.app/";
-const domainURL = "https://3dgyroscope.netlify.app/";
 
 let lastGyroData = { alpha: null, beta: null, gamma: null }; // Track last gyroscope data to avoid redundant sends
 let gyroDisplayUpdateTimer = null; // Timer for display throttling
@@ -15,16 +11,9 @@ let gyroDisplayUpdateTimer = null; // Timer for display throttling
 sendDataButton.addEventListener('click', () => {
   const message = { type: 'data', content: 'Hello from parent!' };
   iframe.contentWindow.postMessage(message, "*"); // Send data to iframe
+  connectionStatus.textContent = 'Data sent to iframe!';
+  connectionStatus.style.color = 'green';
 });
-
-// // Listen for messages from the iframe
-// window.addEventListener('message', (event) => {
-//   // Ensure the message is from the trusted origin
-//   if (event.origin === "*" && event.data && event.data.type === 'ack') {
-//     connectionStatus.textContent = 'Connection is healthy!';
-//     connectionStatus.style.color = 'green';
-//   }
-// });
 
 // Function to send gyroscope data to the iframe
 const sendGyroData = (gyroData) => {
@@ -40,7 +29,6 @@ const updateGyroDisplay = (gyroData) => {
     Gamma (Y-axis): ${gyroData.gamma}°
   `;
 };
-
 
 // Handle gyroscope data
 const handleGyroData = (event) => {
@@ -73,12 +61,7 @@ const handleGyroData = (event) => {
   }
 };
 
-/** 
- * Use throttling to limit the number of times handleGyroData executes.
- * This reduces the frequency of event handling and improves performance.
- * Utility to throttle events
- * */
-
+// Utility to throttle events
 const throttle = (func, limit) => {
   let inThrottle;
   return function () {
