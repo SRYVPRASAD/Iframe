@@ -1,32 +1,16 @@
-const iframe = document.getElementById('myIframe');
-const sendDataButton = document.getElementById('send-data');
-const connectionStatus = document.getElementById('connection-status');
-
-const gyroDataDiv = document.getElementById('gyro-data');
-const requestButton = document.getElementById('request-access');
-
-// const domainURL = "https://dev.vizylab.app/";
-const domainURL = "https://3dgyroscope.netlify.app/";
-
-let lastGyroData = { alpha: null, beta: null, gamma: null }; // Track last gyroscope data to avoid redundant sends
-let gyroDisplayUpdateTimer = null; // Timer for display throttling
+// Throttle gyroscope data handling to 100ms
+const throttle = (func, limit) => {
+  let inThrottle;
+  return function () {
+    if (!inThrottle) {
+      func.apply(this, arguments);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+};
 
 // Function to send data to the iframe
-sendDataButton.addEventListener('click', () => {
-  const message = { type: 'data', content: 'Hello from parent!' };
-  iframe.contentWindow.postMessage(message, domainURL); // Send data to iframe
-});
-
-// Listen for messages from the iframe
-window.addEventListener('message', (event) => {
-  // Ensure the message is from the trusted origin
-  if (event.origin === domainURL && event.data && event.data.type === 'ack') {
-    connectionStatus.textContent = 'Connection is healthy!';
-    connectionStatus.style.color = 'green';
-  }
-});
-
-// Function to send gyroscope data to the iframe
 const sendGyroData = (gyroData) => {
   iframe.contentWindow.postMessage({ type: 'gyroscope', ...gyroData }, domainURL);
 };
@@ -37,10 +21,9 @@ const updateGyroDisplay = (gyroData) => {
     <strong>Gyroscope Data:</strong><br>
     Alpha (Z-axis): ${gyroData.alpha}°<br>
     Beta (X-axis): ${gyroData.beta}°<br>
-    Gamma (Y-axis): ${gyroData.gamma}°
+    Gamma (Y-axis): ${gyroData.gamma}° 
   `;
 };
-
 
 // Handle gyroscope data
 const handleGyroData = (event) => {
@@ -73,22 +56,35 @@ const handleGyroData = (event) => {
   }
 };
 
-/** 
- * Use throttling to limit the number of times handleGyroData executes.
- * This reduces the frequency of event handling and improves performance.
- * Utility to throttle events
- * */
+// Throttled function to handle gyro data with throttle limit of 100ms
+const throttledHandleGyroData = throttle(handleGyroData, 100);
 
-const throttle = (func, limit) => {
-  let inThrottle;
-  return function () {
-    if (!inThrottle) {
-      func.apply(this, arguments);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
-    }
-  };
-};
+// The rest of your existing code remains unchanged
+
+const iframe = document.getElementById('myIframe');
+const sendDataButton = document.getElementById('send-data');
+const connectionStatus = document.getElementById('connection-status');
+const gyroDataDiv = document.getElementById('gyro-data');
+const requestButton = document.getElementById('request-access');
+const domainURL = "https://3dgyroscope.netlify.app/";
+
+let lastGyroData = { alpha: null, beta: null, gamma: null }; // Track last gyroscope data to avoid redundant sends
+let gyroDisplayUpdateTimer = null; // Timer for display throttling
+
+// Function to send data to the iframe
+sendDataButton.addEventListener('click', () => {
+  const message = { type: 'data', content: 'Hello from parent!' };
+  iframe.contentWindow.postMessage(message, domainURL); // Send data to iframe
+});
+
+// Listen for messages from the iframe
+window.addEventListener('message', (event) => {
+  // Ensure the message is from the trusted origin
+  if (event.origin === domainURL && event.data && event.data.type === 'ack') {
+    connectionStatus.textContent = 'Connection is healthy!';
+    connectionStatus.style.color = 'green';
+  }
+});
 
 // Check gyroscope support and request permissions if needed
 if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -120,6 +116,3 @@ if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermis
   gyroDataDiv.textContent = 'Gyroscope is not supported on this device.';
   requestButton.style.display = 'none';
 }
-
-// Throttle gyroscope data handling to 100ms
-const throttledHandleGyroData = throttle(handleGyroData, 100);
