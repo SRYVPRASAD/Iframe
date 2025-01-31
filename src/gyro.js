@@ -46,7 +46,7 @@ const handleGyroData = (event) => {
         gyroDisplayUpdateTimer = null;
       }, 200);
     }
-
+    sendGyroData(gyroData);
     // Send the data only if it has changed
     if (
       lastGyroData.alpha !== gyroData.alpha ||
