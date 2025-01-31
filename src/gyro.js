@@ -14,21 +14,21 @@ let gyroDisplayUpdateTimer = null; // Timer for display throttling
 // Function to send data to the iframe
 sendDataButton.addEventListener('click', () => {
   const message = { type: 'data', content: 'Hello from parent!' };
-  iframe.contentWindow.postMessage(message, domainURL); // Send data to iframe
+  iframe.contentWindow.postMessage(message, "*"); // Send data to iframe
 });
 
-// Listen for messages from the iframe
-window.addEventListener('message', (event) => {
-  // Ensure the message is from the trusted origin
-  if (event.origin === domainURL && event.data && event.data.type === 'ack') {
-    connectionStatus.textContent = 'Connection is healthy!';
-    connectionStatus.style.color = 'green';
-  }
-});
+// // Listen for messages from the iframe
+// window.addEventListener('message', (event) => {
+//   // Ensure the message is from the trusted origin
+//   if (event.origin === "*" && event.data && event.data.type === 'ack') {
+//     connectionStatus.textContent = 'Connection is healthy!';
+//     connectionStatus.style.color = 'green';
+//   }
+// });
 
 // Function to send gyroscope data to the iframe
 const sendGyroData = (gyroData) => {
-  iframe.contentWindow.postMessage({ type: 'gyroscope', ...gyroData }, domainURL);
+  iframe.contentWindow.postMessage({ type: 'gyroscope', ...gyroData }, "*");
 };
 
 // Function to update gyroscope data on the page
