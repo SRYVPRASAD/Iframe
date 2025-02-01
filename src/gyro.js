@@ -132,24 +132,17 @@
 //   // You can also send your gyroscope data here once the iframe is ready
 // });
 
-// Wait for the DOM to be fully loaded before accessing elements
 window.addEventListener('DOMContentLoaded', () => {
   const iframe = document.getElementById('myIframe');
-
-  // Check if iframe is available
-  if (!iframe) {
-    console.error('Iframe not found!');
-    return;
-  }
-
-  // Create a div to display gyroscope data on the parent page (if not already in the HTML)
   const gyroDataDiv = document.getElementById('gyro-data');
-  if (!gyroDataDiv) {
-    console.error('Gyroscope data div not found!');
+  const requestAccessButton = document.getElementById('request-access');
+
+  if (!iframe || !gyroDataDiv || !requestAccessButton) {
+    console.error('Required elements not found!');
     return;
   }
 
-  // Function to update the gyroscope data display in the parent
+  // Function to update the gyroscope data display
   function updateGyroscopeDataDisplay(gyroData) {
     gyroDataDiv.innerHTML = `
       <strong>Gyroscope Data (Parent):</strong><br>
@@ -158,51 +151,56 @@ window.addEventListener('DOMContentLoaded', () => {
       Gamma: ${gyroData.gamma}°`;
   }
 
-  // Function to send data to the iframe
+  // Function to send gyroscope data to iframe
   function sendGyroscopeDataToIframe(gyroData) {
     if (iframe.contentWindow) {
       iframe.contentWindow.postMessage(
         { type: 'gyroscope', ...gyroData },
-        '*' // Adjust this to match the iframe's origin if needed
+        '*' // Adjust this to match iframe origin
       );
       console.log('Gyroscope data sent to iframe:', gyroData);
-    } else {
-      console.log('Iframe contentWindow not accessible.');
     }
   }
 
-  // Check if device orientation events are supported
-  if (window.DeviceOrientationEvent) {
-    window.addEventListener('deviceorientation', (event) => {
-      console.log('Device Orientation event:', event);
+  // Function to start gyroscope tracking
+  function startGyroscopeTracking() {
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', (event) => {
+        console.log('Device Orientation event:', event);
 
-      // If no gyroscope data available, substitute with dummy data
-      const gyroData = {
-        alpha: event.alpha ? event.alpha.toFixed(2) : 0.00,   // Dummy value if no data
-        beta: event.beta ? event.beta.toFixed(2) : 0.00,       // Dummy value if no data
-        gamma: event.gamma ? event.gamma.toFixed(2) : 0.00     // Dummy value if no data
-      };
+        const gyroData = {
+          alpha: event.alpha ? event.alpha.toFixed(2) : 0.00,
+          beta: event.beta ? event.beta.toFixed(2) : 0.00,
+          gamma: event.gamma ? event.gamma.toFixed(2) : 0.00
+        };
 
-      // Update the gyroDataDiv in the parent page
-      updateGyroscopeDataDisplay(gyroData);
-
-      // Send data to iframe if contentWindow is available
-      sendGyroscopeDataToIframe(gyroData);
-    });
-  } else {
-    console.log('Gyroscope is not supported on this device.');
-
-    // Set dummy data when gyroscope is not available
-    const dummyData = {
-      alpha: 0.00,
-      beta: 0.00,
-      gamma: 0.00
-    };
-
-    // Update the gyroDataDiv in the parent page with dummy data
-    updateGyroscopeDataDisplay(dummyData);
-
-    // Send dummy data to iframe
-    sendGyroscopeDataToIframe(dummyData);
+        updateGyroscopeDataDisplay(gyroData);
+        sendGyroscopeDataToIframe(gyroData);
+      });
+    } else {
+      console.log('Gyroscope is not supported on this device.');
+      updateGyroscopeDataDisplay({ alpha: 0.00, beta: 0.00, gamma: 0.00 });
+      sendGyroscopeDataToIframe({ alpha: 0.00, beta: 0.00, gamma: 0.00 });
+    }
   }
+
+  // Handle permission request on iOS
+  requestAccessButton.addEventListener('click', async () => {
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      try {
+        const permissionState = await DeviceOrientationEvent.requestPermission();
+        if (permissionState === 'granted') {
+          requestAccessButton.style.display = 'none'; // Hide button after access
+          startGyroscopeTracking();
+        } else {
+          gyroDataDiv.innerHTML = 'Permission denied. Please allow gyroscope access.';
+        }
+      } catch (error) {
+        console.error('Error requesting gyroscope permission:', error);
+        gyroDataDiv.innerHTML = 'Error requesting permission. Try again.';
+      }
+    } else {
+      startGyroscopeTracking(); // For non-iOS devices
+    }
+  });
 });
