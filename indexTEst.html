@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Device Orientation Demo</title>
+</head>
+
+<body>
+  <h1>Device Orientation Demo</h1>
+
+  <iframe id="iframe" src="https://dev.vizylab.app/aushfg/Inpatient%20Unit/Ex5KZF9iyBksTiUqB1uD/903f5414-2e97-4380-9285-d6650629a150/0" width="100%" height="500px" style="border: none;" allow="accelerometer; gyroscope;"></iframe>
+
+  <script>
+    const iframe = document.getElementById('iframe');
+
+    // Enable orientation event listener on click
+    document.body.addEventListener('click', function () {
+      window.addEventListener('deviceorientation', handleOrientation, false);
+    });
+
+    // Handle device orientation
+    const handleOrientation = (event) => {
+      if (iframe) {
+        const data = {
+          type: 'deviceOrientation',
+          data: {
+            alpha: event.alpha,   // rotation around z-axis
+            beta: event.beta,     // rotation around x-axis
+            gamma: event.gamma    // rotation around y-axis
+          }
+        };
+        console.log('Sending orientation data:', data);
+        iframe.contentWindow.postMessage(data, 'https://dev.vizylab.app'); // Specify the iframe's domain for security
+      }
+    };
+
+    // Cleanup listener when window is closed or unloaded
+    window.addEventListener('unload', () => {
+      window.removeEventListener('deviceorientation', handleOrientation);
+    });
+  </script>
+</body>
+
+</html>
