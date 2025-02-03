@@ -169,9 +169,9 @@ window.addEventListener('DOMContentLoaded', () => {
         console.log('Device Orientation event:', event);
 
         const gyroData = {
-          alpha: event.alpha ? event.alpha.toFixed(2) : 0.00,
-          beta: event.beta ? event.beta.toFixed(2) : 0.00,
-          gamma: event.gamma ? event.gamma.toFixed(2) : 0.00
+          alpha: event.alpha ? event.alpha : 0.00,
+          beta: event.beta ? event.beta : 0.00,
+          gamma: event.gamma ? event.gamma : 0.00
         };
 
         updateGyroscopeDataDisplay(gyroData);
