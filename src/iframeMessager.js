@@ -10,10 +10,10 @@ if (iframe) {
 
 window.addEventListener("message", (event) => {
   // Reject messages from untrusted origins
-  if (event.origin !== window.location.origin) {
-    console.error("Untrusted origin:", event.origin);
-    return;
-  }
+  // if (event.origin !== window.location.origin) {
+  //   console.error("Untrusted origin:", event.origin);
+  //   return;
+  // }
 
   if (event.data?.type === "SAVE_IFRAME_URL") {
     localStorage.setItem("lastIframeUrl", event.data.url); // Store before navigation
