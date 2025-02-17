@@ -2,42 +2,34 @@
 let childURL = '*'
 const iframe = document.querySelector("#childIframe");  // Correct selector (ID selector)
 
+// get and  set the iframe src
 if (iframe) {
   const url = new URL(iframe.src);
   childURL = url.origin;
 
-
-
   // Check if the childItemUrl exists and set it as iframe src
-  const urlParams = new URLSearchParams(window.location.search);
-  const childItemUrl = urlParams.get('childItem');
 
-  if (childItemUrl) {
-    iframe.src = childItemUrl;  // Update iframe src with the childItemUrl
-    console.log("Updated iframe src:", iframe.src);
+  if (window.location.href.includes("?pathValues=")) {
+    const pathNAME = extractPathValues(window.location.href)
+
+    const recon = reconstructSrcUrl(pathNAME)
+    console.log('new 🥌', childURL + recon)
+    iframe.src = childURL + recon
+
   }
 }
 
 
 window.addEventListener("message", (event) => {
-
-
   if (event.data?.type === "OPEN_IN_PARENT") {
-    const currentUrl = window.location.href;
     localStorage.setItem("lastIframeUrl", event.data.url); // Extra safeguard
-    const separator = event.data.url.includes('?') ? '&' : '?';
-    const currentCLeanUrl = removeUnnecessaryParams(currentUrl)
-    window.location.href = event.data.url + separator + 'redirect=' + encodeURIComponent(currentCLeanUrl);// Navigate parent
   }
 });
 
 iframe.addEventListener("load", () => {
   console.log("Iframe is loaded, sending message...");
   const currentUrl = window.location.href;
-  const updatedURL = removeUnnecessaryParams(currentUrl)
-  const urlParams = new URLSearchParams(window.location.search);
-  const childItemUrl = urlParams.get('childItem');
-
+  const updatedURL = currentUrl.replace(/\?pathValues=\{.*?\}/, "")
 
   setTimeout(() => {
     if (iframe.contentWindow) {
@@ -54,12 +46,45 @@ iframe.addEventListener("load", () => {
 });
 
 
+function reconstructSrcUrl(queryString) {
+  const params = new URLSearchParams(queryString);
+  const searchParams = [];
 
-function removeUnnecessaryParams(url) {
-  const urlObj = new URL(url);
-  const paramsToRemove = ['FromIframe', 'redirect', 'childItem'];
+  // Define the parameters you want to replace with '/'
+  const keysToReplace = ['siteId', 'groupName', 'sceneId', 'viewId', 'navMode'];
 
-  paramsToRemove.forEach(param => urlObj.searchParams.delete(param));
+  let output = [];
 
-  return urlObj.toString();
+  // Process each key-value pair in the query string
+  for (const [key, value] of params.entries()) {
+    if (key.startsWith('customParams:')) {
+      // Add searchParams to the searchParams array
+      const searchKey = key.split(':')[1];
+      searchParams.push(`${searchKey}=${value}`);
+    } else if (keysToReplace.includes(key)) {
+      // Replace matched keys with '/'
+      output.push(value);
+    } else {
+      // For other parameters, just add them to searchParams
+      searchParams.push(`${key}=${value}`);
+    }
+  }
+
+  // Combine the output for path and searchParams for query string
+  const baseUrl = output.length ? `/${output.join('/')}` : '';  // Join path segments with '/'
+
+  // Only append '?' if there are search params
+  const searchParamsStr = searchParams.length ? '?' + searchParams.join('&') : '';
+
+  // Return the formatted URL
+  return baseUrl + searchParamsStr;
+}
+
+
+
+
+
+function extractPathValues(url) {
+  const match = url.match(/\{(.*)\}/); // Extract content inside {}
+  return match ? match[1] : ""; // Return extracted part or empty string if not found
 }
