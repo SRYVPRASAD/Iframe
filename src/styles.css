@@ -72,9 +72,14 @@ p {
 }
 
 .input-container {
-  width: 80%;
-  margin: 20px auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
   text-align: center;
+  margin: 2rem auto;
 }
 
 .input-container label {
@@ -128,10 +133,11 @@ body {
   text-align: center;
 }
 
-.div1 h1 {
+.iframe-container2 h2 {
   font-size: 1.8rem;
   color: #333;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .div1 #request-access {
@@ -155,7 +161,7 @@ body {
   color: #555;
 }
 
-.div2 {
+.iframe-container2 {
   width: 90vw;
   height: 90vh;
   display: flex;
@@ -163,7 +169,7 @@ body {
   background-color: #f0f0f0;
 }
 
-.div2 h3 {
+.iframe-container2 h3 {
   font-size: 1.2rem;
   color: #444;
   text-align: center;
@@ -173,7 +179,35 @@ body {
   border-bottom: 1px solid #ddd;
 }
 
-.div2 iframe {
+.iframe-container2 iframe {
   flex-grow: 1;
   border: none;
+}
+
+/* new css for navbar */
+.navbar {
+  background-color: #10212c;
+  padding: 10px;
+  width: 100%;
+}
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+.navbar ul li {
+  margin: 0 15px;
+}
+.navbar ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px 15px;
+  transition: background 0.3s;
+}
+.navbar ul li a:hover {
+  background: #213242;
+  border-radius: 5px;
 }

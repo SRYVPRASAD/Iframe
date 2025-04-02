@@ -1,0 +1,36 @@
+<!-- Dynamic Iframe Page -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="./src/styles.css" />
+  <title>Dynamic Iframe</title>
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="iframePage.html">Dynamic Iframe</a></li>
+    </ul>
+  </nav>
+
+  <div class="iframe-container2">
+    <h2>Load Dynamic Iframe Below</h2>
+    <div class="input-container">
+      <input type="text" id="iframeUrl" placeholder="Enter iframe URL" />
+      <button class="gyro-button" onclick=" loadIframe()">Load Iframe</button>
+    </div>
+
+    <iframe id="dynamicIframe" style="width: 100%; height: 80vh; border: none;"></iframe>
+  </div>
+
+  <script>
+    function loadIframe() {
+      const url = document.getElementById('iframeUrl').value;
+      document.getElementById('dynamicIframe').src = url;
+    }
+  </script>
+</body>
+
+</html>
